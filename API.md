@@ -13,12 +13,7 @@ are described in TypeScript syntax; assume that strict null checking is
 enabled, so that any fields not explicitly marked as nullable (`?`) are not
 nullable.
 
-### General types
-
-The types in this section are not tied to any particular service or endpoint;
-they are used across services.
-
-#### `ApiError`
+### `ApiError`
 
 This is the type used for all error responses. Any response with an HTTP
 status code in the 400 or 500 series should have a body with this format.
@@ -38,7 +33,7 @@ status code in the 400 or 500 series should have a body with this format.
 }
 ```
 
-#### `Link<T>`
+### `Link<T>`
 
 This is an alias for `string` that indicates that the value of the property
 is a link to another API resource. All link values are URIs relative to the
@@ -48,9 +43,7 @@ main API endpoint. For example, the link to the user with ID 56 might be
 The type parameter `T` indicates the type of the resource to which the link
 points (for documentation), and is not actually useful for type checking.
 
-### User service (`/users`)
-
-#### `User`
+### `User`
 
 A user of the rideshare service. The user's password is not included in this
 type, because including it in API responses is unnecessary and a security
@@ -68,7 +61,7 @@ risk.
   /**
    * The user's home address (where they currently live).
    */
-  address: Link<Address>;
+  address: Link<AddressWithId>;
   /**
    * The user's office (where they work).
    */
@@ -97,8 +90,28 @@ risk.
   role: Role;
 }
 ```
+### `Address`
 
-#### `Address`
+An address, as would be written on a form. This is distinct from the
+`AddressWithId` type used with the user service in that there is no ID.
+
+```ts
+{
+  /**
+   * The first line of the address.
+   */
+  address: string;
+  /**
+   * The second line of the address.
+   */
+  address2?: string;
+  city: string;
+  state: string;
+  zip: string;
+}
+```
+
+### `AddressWithId`
 
 An address, as would be written on a form. This is distinct from the
 `Address` type used with the map service in that there is an ID.
@@ -123,7 +136,18 @@ An address, as would be written on a form. This is distinct from the
 }
 ```
 
-#### `Office`
+### `Location`
+
+A geographical location, in terms of its coordinates.
+
+```ts
+{
+  latitude: number;
+  longitude: number;
+}
+```
+
+### `Office`
 
 A Revature office where users work.
 
@@ -141,7 +165,7 @@ A Revature office where users work.
 }
 ```
 
-#### `Car`
+### `Car`
 
 A user's car.
 
@@ -151,13 +175,17 @@ A user's car.
    * The ID of the car in the database.
    */
   id: number;
+  /**
+   * The owner of this car.
+   */
+  owner: Link<User>;
   make: string;
   model: string;
   year: number;
 }
 ```
 
-#### `ContactInfo`
+### `ContactInfo`
 
 A single method of contact for a user.
 
@@ -176,49 +204,7 @@ A single method of contact for a user.
 }
 ```
 
-#### `Role` (enum)
-
-TODO
-
-#### `ContactInfoType` (enum)
-
-TODO
-
-### Map service (`/maps`)
-
-#### `Address`
-
-An address, as would be written on a form. This is distinct from the
-`Address` type used with the user service in that there is no ID.
-
-```ts
-{
-  /**
-   * The first line of the address.
-   */
-  address: string;
-  /**
-   * The second line of the address.
-   */
-  address2?: string;
-  city: string;
-  state: string;
-  zip: string;
-}
-```
-
-#### `Location`
-
-A geographical location, in terms of its coordinates.
-
-```ts
-{
-  latitude: number;
-  longitude: number;
-}
-```
-
-#### `RouteInfo`
+### `RouteInfo`
 
 All the necessary information about a walking route from one point to
 another. Currently, this does not include any directions; the user only needs
@@ -238,14 +224,120 @@ distance.
 }
 ```
 
+### `Role` (enum)
+
+TODO
+
+### `ContactInfoType` (enum)
+
+TODO
+
 ### Matching service (`/matches`)
 
 ## Endpoints
 
-### User service (`/users`)
+The endpoints are documented by service (or pseudo-service; see below); each
+endpoint within a service is marked by a header including the method (e.g.
+`GET`) and the URI (e.g. `/location`). Path parameters are listed in Express
+format (e.g. `/:id`), and query parameters are listed as well (e.g.
+`/?email`) if they are mandatory for a particular route. Within each
+endpoint, the request/response body formats are documented, along with
+possible response status codes.
 
-TODO: describe standard for CRUD operation endpoints.
+Besides the response body format(s) listed, a `ResponseError` can always be
+returned in the event of an unsuccessful request (this will never be
+mentioned explicitly in the response body type). Additionally, any status
+code in the 500 series, as well as 400 (bad request) and 403 (forbidden) may
+be included with the response, regardless of whether this is explicitly
+documented.
 
-### Map service (`/maps`)
+Please note that not all of the top-level endpoints necessarily correspond to
+a distinct microservice; this is a low-level implementation detail that is
+subject to change. Routing requests to each top-level endpoint to the proper
+service is handled by the gateway service.
 
-### Matching service (`/matches`)
+### `/login`
+
+#### `GET /`
+
+A convenience method which parses the JWT given as authentication and
+redirects to the currently logged-in user (e.g. `/users/32` if the user with
+ID 32 is logged in).
+
+**Response status**: 302 (found)
+
+#### `POST /`
+
+Attempts to log a user in using the given credentials.
+
+**Request body**: `{ email: string, password: string }`
+
+**Response status**: 200 (OK)
+
+**Response body**: `string` (a JSON Web Token that can be used for
+authentication)
+
+### `/users`
+
+#### `GET /`
+
+Returns all users.
+
+**Response status**: 200 (OK)
+
+**Response body**: `User[]`
+
+#### `GET /?email`
+
+Returns a single user by email address.
+
+**Response status**: 200 (OK) or 404 (not found)
+
+**Response body**: `User`
+
+#### `GET /:id`
+
+Returns a single user by ID.
+
+**Response status**: 200 (OK) or 404 (not found)
+
+**Response body**: `User`
+
+#### `POST /`
+
+Creates a new user.
+
+**Request body**: `{ user: User, password: string }` (the `id` parameter can
+be omitted from the user object, and will be ignored if it is present)
+
+**Response status**: 201 (created)
+
+**Response body**: `User`
+
+### `/addresses`
+
+### `/offices`
+
+### `/cars`
+
+### `/maps`
+
+### `/contact-info`
+
+#### `GET /location`
+
+TODO: how do we pass in an address as a parameter?
+
+**Response status**: 200 (OK)
+
+**Response body**: `Location`
+
+#### `GET /route`
+
+TODO: how do we pass in two addresses as parameters?
+
+**Response status**: 200 (OK)
+
+**Response body**: `Route`
+
+### `/matches`
