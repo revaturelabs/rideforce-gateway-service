@@ -90,6 +90,7 @@ risk.
   role: Role;
 }
 ```
+
 ### `Address`
 
 An address, as would be written on a form. This is distinct from the
@@ -274,6 +275,31 @@ a distinct microservice; this is a low-level implementation detail that is
 subject to change. Routing requests to each top-level endpoint to the proper
 service is handled by the gateway service.
 
+Finally, when implementing these endpoints, please be sure to follow the
+relevant HTTP conventions for each method: for example, when responding to a
+POST request with a status of 201 (created), please set the
+`Content-Location` header to a link to the newly created resource (in
+addition to returning the resource itself).
+
+### Standard CRUD operations
+
+For brevity and clarity, an endpoint may specify that it supports "basic CRUD
+operations" without explicitly listing the methods below:
+
+- `GET /:id`: retrieves a resource by ID, returning the resource with a
+  status of 200 (OK) or an error with a status of 404 (not found).
+- `POST /`: inserts a new resource, ignoring any ID property in the request
+  body. Returns the newly created resource, along with a status of 201
+  (created) or 409 (conflict; if a conflicting resource already exists).
+- `PUT /:id`: updates an existing resource, returning the updated resource
+  with a status of 200 (OK) or an error with a status of 409 (conflict; if
+  another resource would conflict with the changes).
+
+The `DELETE` method is intentionally omitted for now.
+
+Other methods that do not correspond to one in the list above will be
+mentioned explicitly in more detail.
+
 ### `/login`
 
 #### `GET /`
@@ -297,6 +323,8 @@ authentication)
 
 ### `/users`
 
+Supports basic CRUD operations for `User`.
+
 #### `GET /?email`
 
 Returns a single user by email address.
@@ -305,108 +333,21 @@ Returns a single user by email address.
 
 **Response body**: `User`
 
-#### `GET /:id`
-
-Returns a single user by ID.
-
-**Response status**: 200 (OK) or 404 (not found)
-
-**Response body**: `User`
-
-#### `POST /`
-
-Creates a new user.
-
-**Request body**: `{ user: User, password: string }` (the `id` parameter can
-be omitted from the user object, and will be ignored if it is present)
-
-**Response status**: 201 (created)
-
-**Response body**: `User`
-
 ### `/addresses`
 
-#### `GET /:id`
-
-Returns a single address by ID.
-
-**Response status**: 200 (OK) or 404 (not found)
-
-**Response body**: `AddressWithId`
-
-#### `POST /`
-
-Creates a new address.
-
-**Request body**: `AddressWithId` (the `id` parameter can be omitted from the
-address object, and will be ignored if it is present)
-
-**Response status**: 201 (created)
-
-**Response body**: `AddressWithId`
+Supports basic CRUD operations for `AddressWithId`.
 
 ### `/offices`
 
-#### `GET /:id`
-
-Returns a single office by ID.
-
-**Response status**: 200 (OK) or 404 (not found)
-
-**Response body**: `Office`
-
-#### `POST /`
-
-Creates a new office.
-
-**Request body**: `Office` (the `id` parameter can be omitted from the office
-object, and will be ignored if it is present)
-
-**Response status**: 201 (created)
-
-**Response body**: `Office`
+Supports basic CRUD operations for `Office`.
 
 ### `/cars`
 
-#### `GET /:id`
-
-Returns a single car by ID.
-
-**Response status**: 200 (OK) or 404 (not found)
-
-**Response body**: `Car`
-
-#### `POST /`
-
-Creates a new car.
-
-**Request body**: `Car` (the `id` parameter can be omitted from the car
-object, and will be ignored if it is present)
-
-**Response status**: 201 (created)
-
-**Response body**: `Car`
+Supports basic CRUD operations for `Car`.
 
 ### `/contact-info`
 
-#### `GET /:id`
-
-Returns a single contact listing by ID.
-
-**Response status**: 200 (OK) or 404 (not found)
-
-**Response body**: `ContactInfo`
-
-#### `POST /`
-
-Creates a new contact listing.
-
-**Request body**: `ContactInfo` (the `id` parameter can be omitted from the
-contact listing object, and will be ignored if it is present)
-
-**Response status**: 201 (created)
-
-**Response body**: `ContactInfo`
+Supports basic CRUD operations for `ContactInfo`.
 
 ### `/maps`
 
@@ -435,4 +376,42 @@ Returns all drivers who match the rider with the given user ID.
 **Response status**: 200 (OK) or 404 (not found; if the user ID does not
 correspond to a user)
 
-**Response body**: `User[]`
+**Response body**: `Link<User>[]`
+
+### `/likes`
+
+#### `GET /:id`
+
+Returns all users liked by the user with the given ID.
+
+**Response status**: 200 (OK) or 404 (not found; if the user ID does not
+correspond to a user)
+
+**Response body**: `Link<User>[]`
+
+#### `PUT /:id/:liked`
+
+Indicates that the user with ID `:id` likes the user with ID `:liked`.
+
+**Response status**: 201 (created; if a new like was added), 204 (no content;
+if the like was already in the system) or 404 (not found; if either user ID
+does not correspond to a user)
+
+**Response body**: `void`
+
+#### `DELETE /:id/:liked`
+
+Removes any indication that the user with ID `:id` likes the user with ID
+`:liked`.
+
+**Response status**: 204 (no content; if the like was successfully deleted,
+including if there was no like to begin with) or 404 (not found; if either
+user ID does not correspond to a user)
+
+**Response body**: `void`
+
+### `/dislikes`
+
+The methods for this endpoint are the same as those for `/likes`, but
+applying to dislikes rather than likes. Explicit descriptions are omitted for
+brevity.
