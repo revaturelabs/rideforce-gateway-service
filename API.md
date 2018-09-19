@@ -218,6 +218,26 @@ A geographical location, in terms of its coordinates.
 }
 ```
 
+#### `RouteInfo`
+
+All the necessary information about a walking route from one point to
+another. Currently, this does not include any directions; the user only needs
+to know how long it takes to get from one point to another, as well as the
+distance.
+
+```ts
+{
+  /**
+   * The total route distance, in meters.
+   */
+  distance: number;
+  /**
+   * The total route time, in seconds.
+   */
+  time: number;
+}
+```
+
 ### Matching service (`/matches`)
 
 ## Endpoints
