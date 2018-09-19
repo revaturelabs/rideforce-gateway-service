@@ -226,11 +226,29 @@ distance.
 
 ### `Role` (enum)
 
-TODO
+The role of a user of the ridesharing service.
+
+```ts
+{
+  Driver = 'DRIVER',
+  Rider = 'RIDER',
+  Trainer = 'TRAINER',
+  Admin = 'ADMIN',
+}
+```
 
 ### `ContactInfoType` (enum)
 
-TODO
+TODO: fill this in with more types.
+
+```ts
+{
+  Phone = 'PHONE',
+  Slack = 'SLACK',
+  Skype = 'SKYPE',
+  Other = 'OTHER',
+}
+```
 
 ### Matching service (`/matches`)
 
@@ -279,14 +297,6 @@ authentication)
 
 ### `/users`
 
-#### `GET /`
-
-Returns all users.
-
-**Response status**: 200 (OK)
-
-**Response body**: `User[]`
-
 #### `GET /?email`
 
 Returns a single user by email address.
@@ -316,13 +326,89 @@ be omitted from the user object, and will be ignored if it is present)
 
 ### `/addresses`
 
+#### `GET /:id`
+
+Returns a single address by ID.
+
+**Response status**: 200 (OK) or 404 (not found)
+
+**Response body**: `AddressWithId`
+
+#### `POST /`
+
+Creates a new address.
+
+**Request body**: `AddressWithId` (the `id` parameter can be omitted from the
+address object, and will be ignored if it is present)
+
+**Response status**: 201 (created)
+
+**Response body**: `AddressWithId`
+
 ### `/offices`
+
+#### `GET /:id`
+
+Returns a single office by ID.
+
+**Response status**: 200 (OK) or 404 (not found)
+
+**Response body**: `Office`
+
+#### `POST /`
+
+Creates a new office.
+
+**Request body**: `Office` (the `id` parameter can be omitted from the office
+object, and will be ignored if it is present)
+
+**Response status**: 201 (created)
+
+**Response body**: `Office`
 
 ### `/cars`
 
-### `/maps`
+#### `GET /:id`
+
+Returns a single car by ID.
+
+**Response status**: 200 (OK) or 404 (not found)
+
+**Response body**: `Car`
+
+#### `POST /`
+
+Creates a new car.
+
+**Request body**: `Car` (the `id` parameter can be omitted from the car
+object, and will be ignored if it is present)
+
+**Response status**: 201 (created)
+
+**Response body**: `Car`
 
 ### `/contact-info`
+
+#### `GET /:id`
+
+Returns a single contact listing by ID.
+
+**Response status**: 200 (OK) or 404 (not found)
+
+**Response body**: `ContactInfo`
+
+#### `POST /`
+
+Creates a new contact listing.
+
+**Request body**: `ContactInfo` (the `id` parameter can be omitted from the
+contact listing object, and will be ignored if it is present)
+
+**Response status**: 201 (created)
+
+**Response body**: `ContactInfo`
+
+### `/maps`
 
 #### `GET /location`
 
@@ -341,3 +427,12 @@ TODO: how do we pass in two addresses as parameters?
 **Response body**: `Route`
 
 ### `/matches`
+
+#### `GET /:id`
+
+Returns all drivers who match the rider with the given user ID.
+
+**Response status**: 200 (OK) or 404 (not found; if the user ID does not
+correspond to a user)
+
+**Response body**: `User[]`
