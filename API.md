@@ -59,6 +59,10 @@ risk.
   lastName: string;
   email: string;
   /**
+   * The URL to the user's profile photo.
+   */
+  photoUrl: string;
+  /**
    * The user's home address (where they currently live).
    */
   address: string;
