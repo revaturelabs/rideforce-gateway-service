@@ -299,9 +299,9 @@ Supports basic CRUD operations for `Car`.
 
 Supports basic CRUD operations for `ContactInfo`.
 
-### `/maps`
+### `/location`
 
-#### `GET /location`
+#### `GET /`
 
 Returns the geographical coordinates of an address.
 
@@ -311,7 +311,9 @@ Returns the geographical coordinates of an address.
 
 **Response body**: `Location`
 
-#### `GET /route`
+### `/route`
+
+#### `GET /`
 
 Returns route information for walking directions between two points.
 
