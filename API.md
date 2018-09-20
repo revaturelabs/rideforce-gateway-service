@@ -287,6 +287,18 @@ Returns a single user by email address.
 
 **Response body**: `User`
 
+#### `GET /?office&role`
+
+Returns all users who work at the given office and have the given role.
+
+**Request parameters**: `office: number` (the office ID); `role: string` (the
+role string, e.g. `DRIVER`)
+
+**Reponse status**: 200 (OK) or 404 (not found; if the office ID does not
+correspond to an office)
+
+**Response body**: `User[]`
+
 ### `/offices`
 
 Supports basic CRUD operations for `Office`.
@@ -301,7 +313,7 @@ Supports basic CRUD operations for `ContactInfo`.
 
 ### `/location`
 
-#### `GET /`
+#### `GET /?address`
 
 Returns the geographical coordinates of an address.
 
@@ -313,7 +325,7 @@ Returns the geographical coordinates of an address.
 
 ### `/route`
 
-#### `GET /`
+#### `GET /?start&end`
 
 Returns route information for walking directions between two points.
 
