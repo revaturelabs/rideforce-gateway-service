@@ -277,7 +277,18 @@ authentication)
 
 ### `/users`
 
-Supports basic CRUD operations for `User`.
+Supports basic CRUD operations for `User`, except for `POST /` which is as
+documented below.
+
+#### `POST /`
+
+Creates a new user with the given password.
+
+**Request body**: `{ user: User, password: string }`
+
+**Response status**: 201 (created) or 409 (conflict)
+
+**Response body**: `User`
 
 #### `GET /?email`
 
