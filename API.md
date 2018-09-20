@@ -61,7 +61,7 @@ risk.
   /**
    * The user's home address (where they currently live).
    */
-  address: Link<AddressWithId>;
+  address: string;
   /**
    * The user's office (where they work).
    */
@@ -91,63 +91,6 @@ risk.
 }
 ```
 
-### `Address`
-
-An address, as would be written on a form. This is distinct from the
-`AddressWithId` type used with the user service in that there is no ID.
-
-```ts
-{
-  /**
-   * The first line of the address.
-   */
-  address: string;
-  /**
-   * The second line of the address.
-   */
-  address2?: string;
-  city: string;
-  state: string;
-  zip: string;
-}
-```
-
-### `AddressWithId`
-
-An address, as would be written on a form. This is distinct from the
-`Address` type used with the map service in that there is an ID.
-
-```ts
-{
-  /**
-   * The ID of the address in the database.
-   */
-  id: number;
-  /**
-   * The first line of the address.
-   */
-  address: string;
-  /**
-   * The second line of the address.
-   */
-  address2?: string;
-  city: string;
-  state: string;
-  zip: string;
-}
-```
-
-### `Location`
-
-A geographical location, in terms of its coordinates.
-
-```ts
-{
-  latitude: number;
-  longitude: number;
-}
-```
-
 ### `Office`
 
 A Revature office where users work.
@@ -162,7 +105,7 @@ A Revature office where users work.
    * The common name of the office (e.g. "Reston").
    */
   name: string;
-  address: Link<Address>;
+  address: string;
 }
 ```
 
@@ -202,6 +145,17 @@ A single method of contact for a user.
    * service.
    */
   info: string;
+}
+```
+
+### `Location`
+
+A geographical location, in terms of its coordinates.
+
+```ts
+{
+  latitude: number;
+  longitude: number;
 }
 ```
 
@@ -333,10 +287,6 @@ Returns a single user by email address.
 
 **Response body**: `User`
 
-### `/addresses`
-
-Supports basic CRUD operations for `AddressWithId`.
-
 ### `/offices`
 
 Supports basic CRUD operations for `Office`.
@@ -353,7 +303,9 @@ Supports basic CRUD operations for `ContactInfo`.
 
 #### `GET /location`
 
-TODO: how do we pass in an address as a parameter?
+Returns the geographical coordinates of an address.
+
+**Request parameters**: `address: string`
 
 **Response status**: 200 (OK)
 
@@ -361,7 +313,9 @@ TODO: how do we pass in an address as a parameter?
 
 #### `GET /route`
 
-TODO: how do we pass in two addresses as parameters?
+Returns route information for walking directions between two points.
+
+**Request parameters**: `start: string`; `end: string`
 
 **Response status**: 200 (OK)
 
