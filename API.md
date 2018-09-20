@@ -154,8 +154,8 @@ A geographical location, in terms of its coordinates.
 
 ```ts
 {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
 }
 ```
 
