@@ -179,7 +179,7 @@ distance.
   /**
    * The total route time, in seconds.
    */
-  time: number;
+  duration: number;
 }
 ```
 
