@@ -244,6 +244,7 @@ addition to returning the resource itself).
 For brevity and clarity, an endpoint may specify that it supports "basic CRUD
 operations" without explicitly listing the methods below:
 
+- `GET /`: retrieves a list of all resources.
 - `GET /:id`: retrieves a resource by ID, returning the resource with a
   status of 200 (OK) or an error with a status of 404 (not found).
 - `POST /`: inserts a new resource, ignoring any ID property in the request
@@ -325,6 +326,14 @@ Supports basic CRUD operations for `Car`.
 ### `/contact-info`
 
 Supports basic CRUD operations for `ContactInfo`.
+
+### `/roles`
+
+Supports basic CRUD operations for `Role`.
+
+### `/contact-types`
+
+Supports basic CRUD operations for `ContactType`.
 
 ### `/location`
 
