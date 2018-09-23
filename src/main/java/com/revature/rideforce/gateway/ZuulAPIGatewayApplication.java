@@ -1,4 +1,4 @@
-package com.revature.rideshare.gateway;
+package com.revature.rideforce.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
