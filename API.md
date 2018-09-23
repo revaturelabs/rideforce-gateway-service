@@ -1,4 +1,4 @@
-# Rideshare back-end API
+# RideForce back-end API
 
 This document serves as the central location for the project's API
 documentation, including types used in requests/responses as well as the
@@ -45,7 +45,7 @@ points (for documentation), and is not actually useful for type checking.
 
 ### `User`
 
-A user of the rideshare service. The user's password is not included in this
+A user of the RideForce service. The user's password is not included in this
 type, because including it in API responses is unnecessary and a security
 risk.
 
