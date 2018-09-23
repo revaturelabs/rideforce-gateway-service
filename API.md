@@ -259,6 +259,18 @@ The `DELETE` method is intentionally omitted for now.
 Other methods that do not correspond to one in the list above will be
 mentioned explicitly in more detail.
 
+### `/registration-key`
+
+#### `GET /`
+
+Generates a key that can be used to create new users. Keys expire after 2
+hours. Only trainers and admins can create new registration keys.
+
+**Response status**: 200 (OK)
+
+**Response body**: `string` (a JSON Web Token that can be used as a
+registration key)
+
 ### `/login`
 
 #### `GET /`
@@ -287,9 +299,10 @@ documented below.
 
 #### `POST /`
 
-Creates a new user with the given password.
+Creates a new user with the given password. The registration key must also be
+provided.
 
-**Request body**: `{ user: User, password: string }`
+**Request body**: `{ user: User, password: string, registrationKey: string }`
 
 **Response status**: 201 (created) or 409 (conflict)
 
