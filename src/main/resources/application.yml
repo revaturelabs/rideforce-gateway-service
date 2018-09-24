@@ -7,6 +7,10 @@ spring:
 
 zuul:
   routes:
+    registration-key:
+      path: /registration-key/**
+      serviceId: user-service
+      stripPrefix: false
     login:
       path: /login/**
       serviceId: user-service
@@ -14,6 +18,7 @@ zuul:
     users:
       path: /users/**
       serviceId: user-service
+      stripPrefix: false
     offices:
       path: /offices/**
       serviceId: user-service
@@ -24,6 +29,14 @@ zuul:
       stripPrefix: false
     contact-info:
       path: /contact-info/**
+      serviceId: user-service
+      stripPrefix: false
+    roles:
+      path: /roles/**
+      serviceId: user-service
+      stripPrefix: false
+    contact-types:
+      path: /contact-types/**
       serviceId: user-service
       stripPrefix: false
     location:
@@ -37,6 +50,7 @@ zuul:
     matches:
       path: /matches/**
       serviceId: matching-service
+      stripPrefix: false
     likes:
       path: /likes/**
       serviceId: matching-service

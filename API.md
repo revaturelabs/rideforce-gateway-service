@@ -1,4 +1,4 @@
-# Rideshare back-end API
+# RideForce back-end API
 
 This document serves as the central location for the project's API
 documentation, including types used in requests/responses as well as the
@@ -45,7 +45,7 @@ points (for documentation), and is not actually useful for type checking.
 
 ### `User`
 
-A user of the rideshare service. The user's password is not included in this
+A user of the RideForce service. The user's password is not included in this
 type, because including it in API responses is unnecessary and a security
 risk.
 
@@ -58,6 +58,10 @@ risk.
   firstName: string;
   lastName: string;
   email: string;
+  /**
+   * The URL to the user's profile photo.
+   */
+  photoUrl: string;
   /**
    * The user's home address (where they currently live).
    */
@@ -175,7 +179,7 @@ distance.
   /**
    * The total route time, in seconds.
    */
-  time: number;
+  duration: number;
 }
 ```
 
@@ -240,6 +244,7 @@ addition to returning the resource itself).
 For brevity and clarity, an endpoint may specify that it supports "basic CRUD
 operations" without explicitly listing the methods below:
 
+- `GET /`: retrieves a list of all resources.
 - `GET /:id`: retrieves a resource by ID, returning the resource with a
   status of 200 (OK) or an error with a status of 404 (not found).
 - `POST /`: inserts a new resource, ignoring any ID property in the request
@@ -253,6 +258,18 @@ The `DELETE` method is intentionally omitted for now.
 
 Other methods that do not correspond to one in the list above will be
 mentioned explicitly in more detail.
+
+### `/registration-key`
+
+#### `GET /`
+
+Generates a key that can be used to create new users. Keys expire after 2
+hours. Only trainers and admins can create new registration keys.
+
+**Response status**: 200 (OK)
+
+**Response body**: `string` (a JSON Web Token that can be used as a
+registration key)
 
 ### `/login`
 
@@ -282,9 +299,10 @@ documented below.
 
 #### `POST /`
 
-Creates a new user with the given password.
+Creates a new user with the given password. The registration key must also be
+provided.
 
-**Request body**: `{ user: User, password: string }`
+**Request body**: `{ user: User, password: string, registrationKey: string }`
 
 **Response status**: 201 (created) or 409 (conflict)
 
@@ -321,6 +339,14 @@ Supports basic CRUD operations for `Car`.
 ### `/contact-info`
 
 Supports basic CRUD operations for `ContactInfo`.
+
+### `/roles`
+
+Supports basic CRUD operations for `Role`.
+
+### `/contact-types`
+
+Supports basic CRUD operations for `ContactType`.
 
 ### `/location`
 
