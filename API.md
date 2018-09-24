@@ -276,10 +276,19 @@ registration key)
 #### `GET /`
 
 A convenience method which parses the JWT given as authentication and
-redirects to the currently logged-in user (e.g. `/users/32` if the user with
-ID 32 is logged in).
+returns the currently logged-in user.
 
-**Response status**: 302 (found)
+Note: it would be more logical for this method to return a status of 302
+(found) with the `Location` header set to the URI of the user, but this
+[causes CORS issues on
+Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1444278) and possibly
+other browsers as well. Thus, until all browsers catch up to the standard
+(which was updated two years ago), we have to simply return the user object
+here.
+
+**Response status**: 200 (OK)
+
+**Response body**: `User`
 
 #### `POST /`
 
