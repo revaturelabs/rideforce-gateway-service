@@ -7,6 +7,10 @@ spring:
 
 zuul:
   routes:
+    registration-key:
+      path: /registration-key/**
+      serviceId: user-service
+      stripPrefix: false
     login:
       path: /login/**
       serviceId: user-service
