@@ -6,6 +6,9 @@ spring:
     name: gateway-service
 
 zuul:
+  sensitive-headers:
+    - Cookie
+    - Set-Cookie
   routes:
     registration-key:
       path: /registration-key/**
