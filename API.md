@@ -63,6 +63,10 @@ risk.
    */
   photoUrl: string;
   /**
+   * The user's bio (a short "about me" description). Limit to 200 characters.
+   */
+  bio?: string;
+  /**
    * The user's home address (where they currently live).
    */
   address: string;
