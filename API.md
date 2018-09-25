@@ -341,7 +341,7 @@ correspond to an office)
 
 **Response body**: `User[]`
 
-#### `POST /:id/password`
+#### `PUT /:id/password`
 
 Updates the password of the user with the given ID. Confirmation of the old
 password is required to set a new password.
