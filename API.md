@@ -348,9 +348,9 @@ password is required to set a new password.
 
 **Request body**: `{ old: string, new: string }`
 
-**Response status**: 200 (OK) or 403 (forbidden; if the old password was
+**Response status**: 200 (OK), 403 (forbidden; if the old password was
 incorrect, or due to any other authentication issue such as not being logged
-in)
+in) or 404 (if the user does not exist)
 
 **Response body**: `void`
 
