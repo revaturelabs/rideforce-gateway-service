@@ -61,7 +61,7 @@ risk.
   /**
    * The URL to the user's profile photo.
    */
-  photoUrl: string;
+  photoUrl?: string;
   /**
    * The user's bio (a short "about me" description). Limit to 200 characters.
    */
