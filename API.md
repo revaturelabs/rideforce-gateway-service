@@ -341,6 +341,19 @@ correspond to an office)
 
 **Response body**: `User[]`
 
+#### `POST /:id/password`
+
+Updates the password of the user with the given ID. Confirmation of the old
+password is required to set a new password.
+
+**Request body**: `{ old: string, new: string }`
+
+**Response status**: 200 (OK) or 403 (forbidden; if the old password was
+incorrect, or due to any other authentication issue such as not being logged
+in)
+
+**Response body**: `void`
+
 ### `/offices`
 
 Supports basic CRUD operations for `Office`.
