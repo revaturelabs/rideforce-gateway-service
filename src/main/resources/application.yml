@@ -76,13 +76,3 @@ matching-service:
     ReadTimeout: 3000
     MaxTotalHttpConnections: 500
     MaxConnectionsPerHost: 100
-# for localhost, handling time out issues
-user-service:
-  ribbon:
-    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
-    listOfServers: http://localhost:5555
-    ConnectTimeout: 1000
-    ReadTimeout: 30000
-    MaxTotalHttpConnections: 500
-    MaxConnectionsPerHost: 100
-      
