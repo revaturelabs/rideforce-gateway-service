@@ -167,6 +167,17 @@ A geographical location, in terms of its coordinates.
 }
 ```
 
+### `FavoriteLocation`
+
+A geographical location saved by the user, in terms of its coordinates.
+
+```ts
+{
+  lat: number;
+  lng: number;
+}
+```
+
 ### `RouteInfo`
 
 All the necessary information about a walking route from one point to
@@ -381,6 +392,20 @@ Supports basic CRUD operations for `ContactType`.
 Returns the geographical coordinates of an address.
 
 **Request parameters**: `address: string`
+
+**Response status**: 200 (OK)
+
+**Response body**: `Location`
+
+### `/favoritelocations`
+
+#### `GET /users/{id}?address={address}`
+
+Returns the geographical coordinates of a user-saved address.
+
+**Request parameters**: `address: string`
+
+**Path variables**: `userId: int`
 
 **Response status**: 200 (OK)
 

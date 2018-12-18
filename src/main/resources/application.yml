@@ -67,3 +67,12 @@ eureka:
   client:
     service-url:
       default-zone: http://localhost:8761/eureka
+      
+matching-service:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: http://localhost:4444
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100
