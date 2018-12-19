@@ -24,3 +24,5 @@ user-service:
 ```
 
 > Note: make sure to remove the above lines from Zuul when merging to dev branch!
+
+> Also: you can ignore the, unknown property 'matching-service' warnings in the application.yml file
