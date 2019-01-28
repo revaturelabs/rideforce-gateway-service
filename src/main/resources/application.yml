@@ -30,6 +30,10 @@ zuul:
       path: /cars/**
       serviceId: user-service
       stripPrefix: false
+    storage:
+      path: /storage/**
+      serviceId: user-service
+      stripPrefix: false
     contact-info:
       path: /contact-info/**
       serviceId: user-service
