@@ -10,10 +10,14 @@ zuul:
     - Cookie
     - Set-Cookie
   routes:
-    registration-key:
-      path: /registration-key/**
-      serviceId: user-service
-      stripPrefix: false
+    tokens:
+      path: /tokens/**
+      service-id: user-service
+      strip-prefix: false
+    well-knowns:
+      path: /.well-known/jwks.json
+      service-id: user-service
+      strip-prefix: false
     login:
       path: /login/**
       serviceId: user-service
